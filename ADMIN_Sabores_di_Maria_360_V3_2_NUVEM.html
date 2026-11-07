@@ -132,7 +132,8 @@ function buscaProduto(id){
 }
 function mostrarSaldoMov(id){
   const el=$(id);
-  const x=get(el);
+  const code=String(el.value||'').trim().match(/^(\d+)/);
+const x=code ? D.find(p=>String(p.codigo)===code[1]) : null;
   if(!x) return;
 
   let painel=el.parentElement.querySelector('.saldo-mov');
