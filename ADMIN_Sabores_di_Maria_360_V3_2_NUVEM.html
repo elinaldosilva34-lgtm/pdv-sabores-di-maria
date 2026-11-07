@@ -119,10 +119,40 @@ function activateTab(name){
   $$('.view').forEach(x=>x.classList.toggle('hidden',x.id!==name));
 }
 function clearMovementForm(tipo){
- if(tipo==='FRACIONAR'){$('#pFrac').value='';$('#qFrac').value='';$('#prevFrac').textContent='Informe os pacotes. O sistema calcula a baixa do Granel pelo peso padrão.';$('#pFrac').focus()}
- if(tipo==='REPOR'){$('#pRep').value='';$('#qRep').value='';$('#pRep').focus()}
- if(tipo==='COMPRA'){$('#pCompra').value='';$('#kgCompra').value='';$('#pCompra').focus()}
- if(tipo==='AJUSTE GRANEL'){$('#pAjuste').value='';$('#kgAjuste').value='';$('#motivoAjuste').value='';$('#pAjuste').focus()}
+  let campo=null;
+
+  if(tipo==='FRACIONAR'){
+    campo=$('#pFrac');
+    campo.value='';
+    $('#qFrac').value='';
+    $('#prevFrac').textContent='Informe os pacotes. O sistema calcula a baixa do Granel pelo peso padrão.';
+  }
+
+  if(tipo==='REPOR'){
+    campo=$('#pRep');
+    campo.value='';
+    $('#qRep').value='';
+  }
+
+  if(tipo==='COMPRA'){
+    campo=$('#pCompra');
+    campo.value='';
+    $('#kgCompra').value='';
+  }
+
+  if(tipo==='AJUSTE GRANEL'){
+    campo=$('#pAjuste');
+    campo.value='';
+    $('#kgAjuste').value='';
+    $('#motivoAjuste').value='';
+  }
+
+  if(campo){
+    campo.removeAttribute('list');
+    const painel=campo.parentElement.querySelector('.saldo-mov');
+    if(painel) painel.remove();
+    campo.focus();
+  }
 }
 async function refreshCloud(){await loadCloudStock();render();renderGiro();await loadCloudMoves();}
 function val(id){return Number($(id).value||0)}
