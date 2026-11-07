@@ -34,7 +34,7 @@ async function loadCloudStock(){
  ps.forEach(p=>{productIdByCode[String(p.codigo)]=p.id;productById[String(p.id)]=p});
  const es=await api('estoque_saldos?select=produto_id,exposicao,fracionado,granel_kg');
  let map={}; es.forEach(e=>map[String(e.produto_id)]=e);
- D.forEach(x=>{let id=productIdByCode[String(x.codigo)],e=id?map[String(id)]:null;if(e){x.exp=Number(e.exposicao||0);x.frac=Number(e.fracionado||0);x.granel=Number(e.granel_kg||0);x.pesoPacoteKg=Number(p?.peso_pacote_kg||0);x.foraMarco=false}});
+ D.forEach(x=>{let id=productIdByCode[String(x.codigo)],e=id?map[String(id)]:null;if(e){x.exp=Number(e.exposicao||0);x.frac=Number(e.fracionado||0);x.granel=Number(e.granel_kg||0);x.pesoPacoteKg=Number(ps.find(p=>String(p.codigo)===String(x.codigo))?.peso_pacote_kg||0));x.foraMarco=false}});
  // Include stock SKUs absent from historical intelligence without hiding them
  es.forEach(e=>{let p=productById[String(e.produto_id)];if(!p||D.some(x=>String(x.codigo)===String(p.codigo)))return;D.push({codigo:String(p.codigo),produto:p.descricao||('Produto '+p.codigo),categoria:'Cadastro atual',status:'SEM HISTÓRICO',acao:'OK / MONITORAR',exp:Number(e.exposicao||0),frac:Number(e.fracionado||0),granel:Number(e.granel_kg||0),pacotes:0,kg:0,diasVenda:0,qtdVenda:0,receita:0})});
 }
