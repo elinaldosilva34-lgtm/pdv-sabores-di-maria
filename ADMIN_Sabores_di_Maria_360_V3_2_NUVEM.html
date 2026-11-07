@@ -20,7 +20,12 @@
   <input id="qFrac" type="text" inputmode="numeric" placeholder="Pacotes produzidos" oninput="previewFrac()" style="flex:1">
 <button type="button" onclick="qFrac.value=(Number(qFrac.value)||0)+1;previewFrac()" style="width:42px"&plus;</button> 
 </div>><div id="prevFrac" class="note">Informe os pacotes. O sistema calcula a baixa do Granel pelo peso padrão.</div><button class="primary" onclick="fracionar()">Registrar fracionamento</button></div>
-<div class="actionbox"><h3>🏪 Repor exposição</h3><input class="prodsearch" id="pRep" placeholder="Digite código ou produto..."><datalist id="listRep"></datalist><input id="qRep" type="text" inputmode="numeric" placeholder="Pacotes transferidos"><button class="primary" onclick="repor()">Registrar reposição</button></div>
+<div class="actionbox"><h3>🏪 Repor exposição</h3><input class="prodsearch" id="pRep" placeholder="Digite código ou produto..."><datalist id="listRep"></datalist><div style="display:flex;gap:6px;align-items:center">
+<button type="button" onclick="qRep.value=Math.max(1,(Number(qRep.value)||1)-1)" style="width:42px">&minus;</button>
+<input id="qRep" type="text" inputmode="numeric" placeholder="Pacotes transferidos" style="flex:1">
+<button type="button" onclick="qRep.value=(Number(qRep.value)||0)+1" style="width:42px">&plus;</button>
+</div>
+<button class="primary" onclick="repor()">Registrar reposição</button></div>
 <div class="actionbox"><h3>🛒 Compra a granel</h3><input class="prodsearch" id="pCompra" placeholder="Digite código ou produto..."><datalist id="listCompra"></datalist><input id="kgCompra" type="number" step="0.001" min="0" placeholder="Kg adquiridos"><button class="primary" onclick="comprar()">Registrar compra</button></div>
 <div class="actionbox"><h3>⚠️ Ajustar granel</h3><input class="prodsearch" id="pAjuste" placeholder="Digite código ou produto..."><datalist id="listAjuste"></datalist><input id="kgAjuste" type="number" step="0.001" min="0" placeholder="Estoque real em kg (pode ser 0)"><select id="motivoAjuste"><option value="">Motivo...</option><option>Perda / Avaria</option><option>Vencimento</option><option>Divergência de inventário</option><option>Outro</option></select><button class="primary" onclick="ajustarGranel()">Registrar ajuste</button></div>
 </div><div id="msg" class="note">☁️ Conectando ao Supabase...</div><h3>Últimos movimentos</h3><div id="movelist" class="movelist"></div></section>
