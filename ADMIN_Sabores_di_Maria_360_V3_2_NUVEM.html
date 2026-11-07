@@ -130,9 +130,27 @@ function buscaProduto(id){
 
   el.setAttribute('list',lid);
 }
+function mostrarSaldoMov(id){
+  const el=$(id);
+  const x=get(el);
+  if(!x) return;
 
+  let painel=el.parentElement.querySelector('.saldo-mov');
+  if(!painel){
+    painel=document.createElement('div');
+    painel.className='saldo-mov';
+    painel.style.cssText='margin:8px 0;padding:10px 12px;background:#eef7f0;border:1px solid #cfe3d4;border-radius:10px;font-size:13px;line-height:1.6;';
+    el.insertAdjacentElement('afterend',painel);
+  }
+
+  painel.innerHTML=
+    `<b>${x.codigo} — ${x.produto}</b><br>`+
+    `📦 Exposição: <b>${x.exp}</b> pct &nbsp; | &nbsp; `+
+    `🗃️ Fracionado: <b>${x.frac}</b> pct &nbsp; | &nbsp; `+
+    `⚖️ Granel: <b>${fmt(x.granel)} kg</b>`;
+}
 ['#pFrac','#pRep','#pCompra','#pAjuste'].forEach(id=>{
-  $(id).addEventListener('input',()=>buscaProduto(id));
+$(id).addEventListener('input',()=>{buscaProduto(id);mostrarSaldoMov(id);});  
 });
 function previewFrac(){let x=get($('#pFrac').value),q=val('#qFrac');if(!x||q<=0){$('#prevFrac').textContent='Informe os pacotes. O sistema calcula a baixa do Granel pelo peso padrão.';return}let pp=pesoPacote(x),kg=q*pp;$('#prevFrac').innerHTML=`⚖️ <b>${Math.round(pp*1000)} g/pacote</b> × ${q} = <b>${fmt(kg)} kg</b> do Granel • disponível ${fmt(x.granel)} kg`}
 async function runMove(label,fn,body,tipo){if(!confirm('Confirmar '+label+'?'))return;try{$('#msg').innerHTML='☁️ Registrando no Supabase...';await rpc(fn,body);clearMovementForm(tipo);await refreshCloud();$('#msg').innerHTML='✅ <b>'+label+'</b> registrado na nuvem e auditado.'}catch(e){$('#msg').innerHTML='❌ '+e.message;alert(e.message)}}
