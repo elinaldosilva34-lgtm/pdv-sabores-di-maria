@@ -34,19 +34,21 @@ async function loadCloudStock(){
  ps.forEach(p=>{productIdByCode[String(p.codigo)]=p.id;productById[String(p.id)]=p});
  const es=await api('estoque_saldos?select=produto_id,exposicao,fracionado,granel_kg');
  let map={}; es.forEach(e=>map[String(e.produto_id)]=e);
- D.forEach(x=>{
-  let id=productIdByCode[String(x.codigo)];
-  let e=id ? map[String(id)] : null;
+ D.forEach(x => {
+  const id = productIdByCode[String(x.codigo)];
+  const e = id ? map[String(id)] : null;
 
-  if(e){
-    x.exp=Number(e.exposicao||0);
-    x.frac=Number(e.fracionado||0);
-    x.granel=Number(e.granel_kg||0);
+  if (e) {
+    x.exp = Number(e.exposicao || 0);
+    x.frac = Number(e.fracionado || 0);
+    x.granel = Number(e.granel_kg || 0);
 
-    const prod=ps.find(item=>String(item.codigo)===String(x.codigo));
-    x.pesoPacoteKg=Number(prod?.peso_pacote_kg||0);
+    const prod = ps.find(item =>
+      String(item.codigo) === String(x.codigo)
+    );
 
-    x.foraMarco=false;
+    x.pesoPacoteKg = Number(prod?.peso_pacote_kg || 0);
+    x.foraMarco = false;
   }
 });
  // Include stock SKUs absent from historical intelligence without hiding them
