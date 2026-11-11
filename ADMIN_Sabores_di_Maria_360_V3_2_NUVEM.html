@@ -97,7 +97,8 @@ function acaoAtual(x){
   if(x.foraMarco) return 'VALIDAR ESTOQUE';
   if(c!==null && c<=7) return 'COMPRAR AGORA';
   if(c!==null && c<=14) return 'PLANEJAR COMPRA';
-  return x.acao;
+  if(x.granel>0 && x.frac<=5) return 'FRACIONAR';
+return 'SEGURAR COMPRA';
 }
 function coverBadge(x){
   let c=cobertura(x);
