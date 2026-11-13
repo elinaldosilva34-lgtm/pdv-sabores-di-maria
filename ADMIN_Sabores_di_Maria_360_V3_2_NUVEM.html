@@ -280,7 +280,7 @@ async function ajustarGranel(){let c=$('#pAjuste').value,kg=val('#kgAjuste'),mot
   if(q<0) return alert('Informe um estoque válido em pacotes.');
   if(!motivo) return alert('Selecione o motivo do ajuste.');
 
-  return runMove(
+  const ok = await runMove(
     `Ajustar fracionado de ${x.produto} para ${q} pacotes • ${motivo}`,
     'ajustar_fracionado',
     {
@@ -290,6 +290,20 @@ async function ajustarGranel(){let c=$('#pAjuste').value,kg=val('#kgAjuste'),mot
     },
     'AJUSTE_FRACIONADO'
   );
+
+  if(ok === true){
+    $('#pAjusteFrac').value='';
+    $('#qAjusteFrac').value='';
+    $('#motivoAjusteFrac').value='';
+
+    const painel=$('#pAjusteFrac')
+      .parentElement
+      .querySelector('.saldo-mov');
+
+    if(painel) painel.remove();
+  }
+
+  return ok;
 }
 async function devolverFracionado(){
   let c=$('#pDevolver').value,
