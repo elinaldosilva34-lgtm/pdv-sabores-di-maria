@@ -291,7 +291,7 @@ async function ajustarGranel(){let c=$('#pAjuste').value,kg=val('#kgAjuste'),mot
     'AJUSTE_FRACIONADO'
   );
 }
-  async function devolverFracionado(){
+async function devolverFracionado(){
   let c=$('#pDevolver').value,
       q=val('#qDevolver'),
       x=get(c);
@@ -300,24 +300,28 @@ async function ajustarGranel(){let c=$('#pAjuste').value,kg=val('#kgAjuste'),mot
   if(q<=0) return alert('Informe a quantidade de pacotes devolvidos.');
 
   const ok = await runMove(
-  `Devolver ${q} pacote(s) de ${x.produto} da exposição para o fracionado`,
-  'devolver_exposicao',
-  {
-    p_codigo:Number(codeFromSearch(c)),
-    p_quantidade:q
-  },
-  'DEVOLUCAO'
-);
+    `Devolver ${q} pacote(s) de ${x.produto} da exposição para o fracionado`,
+    'devolver_exposicao',
+    {
+      p_codigo:Number(codeFromSearch(c)),
+      p_quantidade:q
+    },
+    'DEVOLUCAO'
+  );
 
-if(ok !== false){
-  $('#pDevolver').value='';
-  $('#qDevolver').value='';
-  const painel=$('#pDevolver').parentElement.querySelector('.saldo-mov');
-  if(painel) painel.remove();
-}
+  if(ok === true){
+    $('#pDevolver').value='';
+    $('#qDevolver').value='';
 
-return ok;
-}
+    const painel=$('#pDevolver')
+      .parentElement
+      .querySelector('.saldo-mov');
+
+    if(painel) painel.remove();
+  }
+
+  return ok;
+} 
 function renderMoves(){$('#movelist').innerHTML=moves.length?moves.slice(0,30).map(m=>{let d=`${m.qtd?m.qtd+' pct':''} ${m.kg?fmt(m.kg)+' kg':''} ${m.motivo?'• '+m.motivo:''}`;return `<div class=mov><b>${m.tipo}</b><span>${m.codigo} — ${m.produto} • ${d}</span><small>${m.ts?new Date(m.ts).toLocaleString('pt-BR'):''}</small></div>`}).join(''):'<div class=muted>Nenhuma movimentação registrada.</div>'}
 $$('.tab').forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
 ['COMPRAR AGORA','PLANEJAR COMPRA'].forEach(a=>{if(![...$('#fa').options].some(o=>o.value===a))$('#fa').insertAdjacentHTML('beforeend',`<option value="${a}">${a}</option>`)});
